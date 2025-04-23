@@ -1,0 +1,104 @@
+show databases;
+
+#建立資料庫
+create database demo;
+
+#刪除資料庫
+drop database demo;
+
+#選擇資料庫
+use demo;
+
+
+#建立資料表
+
+- 顧客資料表
+create table customers(
+id int auto_increment primary key,
+name varchar(10) not null,
+email varchar(100) not null unique
+);
+
+- 商品資料表
+create table if not exists products(
+id int auto_increment primary key,
+name varchar(20) not null,
+price float not null,
+info text
+);
+
+-訂單資料表
+create table if not exists orders(
+id int auto_increment primary key,
+customer_id int,
+product_id int,
+qty int default 1,
+create_date TIMESTAMP default CURRENT_TIMESTAMP(),
+
+FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE,
+FOREIGN KEY (product_id) REFERENCES  products(id) ON DELETE RESTRICT
+
+);
+
+
+- 資料表語法
+- show tables;
+- show create table customers;
+- desc customers;
+
+
+
+- 插入資料
+insert into customers(name,email) values
+("小美","mary@gmail.com"),
+("小張","cheng@gmail.com"),
+("小陳","chen@gmail.com"),
+("jerrycheng","jerrycheng@gmail.com");
+
+insert into products(name,price) values
+("可樂",35),
+("大薯",66.666),
+("炸雞",95.00);
+
+insert into orders(customer_id,product_id) values
+(5,1),
+(7,3),
+(6,2);
+
+
+- 修改欄位
+- alter table products modify price decimal(6,2);
+
+- select * from customers;
+- select * from products;
+- select * from orders;
+
+- 更新語法
+
+- update products set price=65 where name="大薯";
+- update products set price=price+10 where name like "炸%";
+
+
+- 刪除語法
+- delete from customers where email="jerrycheng@gmail.com";
+
+
+- 約束id
+- alter table order
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
