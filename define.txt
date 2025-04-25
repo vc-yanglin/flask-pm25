@@ -1,0 +1,39 @@
+https://sta.ci.taiwan.gov.tw
+
+https://sta.ci.taiwan.gov.tw/STA_AirQuality_v2/v1.0/Datastreams?$expand=Thing,Observations($orderby=phenomenonTime%20desc;$top=1)&$filter=name%20eq%20%27PM2.5%27%20and%20Thing/properties/authority%20eq%20%27%E8%A1%8C%E6%94%BF%E9%99%A2%E7%92%B0%E5%A2%83%E4%BF%9D%E8%AD%B7%E7%BD%B2%27%20and%20substringof(%27%E7%A9%BA%E6%B0%A3%E5%93%81%E8%B3%AA%E6%B8%AC%E7%AB%99%27,Thing/name)&$count=true
+
+stocks=[
+        {'分類': '日經指數', '指數': '22,920.30'},
+        {'分類': '韓國綜合', '指數': '2,304.59'},
+        {'分類': '香港恆生', '指數': '25,083.71'},
+        {'分類': '上海綜合', '指數': '3,380.68'}
+    ]
+
+
+"emmet.includeLanguages":{"django-html":"html"},
+
+
+ books={1:"Python book",2:"Java book",3:"Flask book"}
+
+
+
+books={
+1:{
+"name":"Python book",
+"price":299,
+"image_url":"https://im2.book.com.tw/image/getImage?i=https://www.books.com.tw/img/CN1/136/11/CN11361197.jpg&v=58096f9ck&w=348&h=348"
+},
+
+2:{
+
+"name":"Java book",
+"price":399,
+"image_url":"https://im1.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/087/31/0010873110.jpg&v=5f7c475bk&w=348&h=348"
+},
+
+3:{
+"name":"C# book",
+"price":499,
+"image_url":"https://im1.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/036/04/0010360466.jpg&v=62d695bak&w=348&h=348"
+},
+}

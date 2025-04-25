@@ -86,6 +86,8 @@ insert into orders(customer_id,product_id) values
 - 約束id
 - alter table order
 
+https://www.w3schools.com/mysql/mysql_alter.asp
+
 
 
 

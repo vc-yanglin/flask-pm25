@@ -1,18 +1,47 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from datetime import datetime
 import pandas as pd
 import pymysql
 
 app = Flask(__name__)
 
+books = {1: "Python book", 2: "Java book", 3: "Flask book"}
+
 
 @app.route("/")
 def index():
     # return f"<h1>Hello World!</h1><br>{datetime.now()}"
+    sw = 1
+    if sw:
+        books = [
+            {
+                "name": "Python book",
+                "price": 299,
+                "image_url": "https://im2.book.com.tw/image/getImage?i=https://www.books.com.tw/img/CN1/136/11/CN11361197.jpg&v=58096f9ck&w=348&h=348",
+            },
+            {
+                "name": "Java book",
+                "price": 399,
+                "image_url": "https://im1.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/087/31/0010873110.jpg&v=5f7c475bk&w=348&h=348",
+            },
+            {
+                "name": "C# book",
+                "price": 499,
+                "image_url": "https://im1.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/036/04/0010360466.jpg&v=62d695bak&w=348&h=348",
+            },
+        ]
+    else:
+        books = []
+
+    for book in books:
+        print(book["name"])
+        print(book["price"])
+        print(book["image_url"])
+
     username = "Victor"
     nowtime = datetime.now().strftime("%Y-%m-%d")
 
-    return render_template("index.html", name=username, now=nowtime)
+    return render_template("index.html", name=username, now=nowtime, books=books)
 
 
 @app.route("/pm25")
@@ -22,6 +51,18 @@ def get_pm25_data():
     df["datacreationdate"] = pd.to_datetime(df["datacreationdate"])
     df1 = df.dropna()
     return df1.values.tolist()
+
+
+@app.route("/bmi")
+def get_bmi():
+    height = request.args.get("height")
+    weight = request.args.get("weight")
+
+    bmi = round(eval(weight) / (eval(height) / 100) ** 2, 2)
+    print(bmi)
+    return render_template(
+        "bmi.html", bmi={"height": height, "weight": weight, "bmi": bmi}
+    )
 
 
 app.run(debug=True)
