@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from datetime import datetime
 import pandas as pd
 import pymysql
+from pm25 import get_pm25_data_from_mysql
 
 app = Flask(__name__)
 
@@ -10,6 +11,13 @@ books = {1: "Python book", 2: "Java book", 3: "Flask book"}
 
 @app.route("/")
 def index():
+    columns, datas = get_pm25_data_from_mysql()
+
+    return render_template("index.html", **locals())
+
+
+@app.route("/books")
+def book_page():
     # return f"<h1>Hello World!</h1><br>{datetime.now()}"
     sw = 1
     if sw:
@@ -41,7 +49,7 @@ def index():
     username = "Victor"
     nowtime = datetime.now().strftime("%Y-%m-%d")
 
-    return render_template("index.html", name=username, now=nowtime, books=books)
+    return render_template("books.html", **locals())
 
 
 @app.route("/pm25")
@@ -65,4 +73,5 @@ def get_bmi():
     )
 
 
-app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=True)
