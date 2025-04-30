@@ -13,8 +13,33 @@ books = {1: "Python book", 2: "Java book", 3: "Flask book"}
 @app.route("/")
 def index():
     columns, datas = get_pm25_data_from_mysql()
+    df = pd.DataFrame(datas, columns=columns)
+    counties = sorted(df["county"].unique().tolist())
+    print(counties)
 
-    return render_template("index.html", **locals())
+    county = request.args.get("county", "ALL")
+    columns, datas = get_pm25_data_from_mysql()
+    df = pd.DataFrame(datas, columns=columns)
+
+    if county != "ALL":
+        df = df.groupby("county").get_group(county)
+        columns = df.columns.tolist()
+        datas = df.values.tolist()
+        print(df)
+
+    x_data = df["site"].to_list()
+    y_data = df["pm25"].to_list()
+
+    return render_template(
+        "index.html",
+        columns=columns,
+        datas=datas,
+        counties=counties,
+        selected_county=county,
+        x_data=x_data,
+        y_data=y_data,
+    )
+    # return render_template("index.html", **locals())
 
 
 @app.route("/books")
@@ -51,6 +76,18 @@ def book_page():
     nowtime = datetime.now().strftime("%Y-%m-%d")
 
     return render_template("books.html", **locals())
+
+
+### @app.route("/filter", methods=["POST"]
+###    county = request.form.get("county")
+@app.route("/filter")
+def filter_data():
+    county = request.args.get("county")
+    columns, datas = get_pm25_data_from_mysql()
+    df = pd.DataFrame(datas, columns=columns)
+    df1 = df.groupby("county").get_group(county).groupby("site")["pm25"].mean().round(2)
+    print(df1)
+    return {"county": county}
 
 
 @app.route("/update-db")

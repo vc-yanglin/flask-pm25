@@ -6,11 +6,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>首頁</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
     <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
 </head>
 
 <body>
     <h1>pm2.5</h1>
+    <h3>最新更新時間:{{datas[0][4]}}</h3>
+
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+    <a class="btn-update" href="/update-db">更新資料庫</a>
+    <!--  <form action="/filter" method="GET">-->
+    <form action="/" method="GET">
+        <select name="county" id="county">
+            <label for="county">選取縣市</label>
+            <option value="ALL">全部縣市</option>
+            {% for county in counties %}
+            <option value="{{county}}" {% if selected_county==county %} selected {% endif %}>{{county}}</option>
+            {% endfor %}
+        </select>
+        <button type="" submit>查詢</button>
+    </form>
+
+    <div id="chart-data" data-lables="{{x_data}}" data-values="{{y_data}}"></div>
+
     <table border="1">
         <thead>
             {% for col in columns %}
@@ -28,7 +48,42 @@
         </tbody>
     </table>
 
+    <script type="text/javascript">
 
+        const chartData = document.querySelector("#chart-data");
+        const lables = chartData.dataset.lables;
+        const values = chartData.dataset.values;
+
+        console.log(chartData, lables, values);
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: 'pm25柱狀圖'
+            },
+            tooltip: {},
+            legend: {
+                data: ['销量']
+            },
+            xAxis: {
+                data: lables
+            },
+            yAxis: {},
+            series: [
+                {
+                    name: '销量',
+                    type: 'bar',
+                    data: values
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
 </body>
 
 </html>
