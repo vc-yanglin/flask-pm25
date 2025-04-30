@@ -2,7 +2,8 @@ from flask import Flask, render_template, request
 from datetime import datetime
 import pandas as pd
 import pymysql
-from pm25 import get_pm25_data_from_mysql
+from pm25 import get_pm25_data_from_mysql, update_db
+import json
 
 app = Flask(__name__)
 
@@ -50,6 +51,16 @@ def book_page():
     nowtime = datetime.now().strftime("%Y-%m-%d")
 
     return render_template("books.html", **locals())
+
+
+@app.route("/update-db")
+def update_pm25_db():
+    count, message = update_db()
+    nowtime = datetime.now().strftime("%Y-%m-%d")
+    result = json.dumps(
+        {"時間": nowtime, "更新筆數": count, "結果": message}, ensure_ascii=False
+    )
+    return result
 
 
 @app.route("/pm25")
