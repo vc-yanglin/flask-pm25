@@ -29,7 +29,7 @@
         <button type="" submit>查詢</button>
     </form>
 
-    <div id="chart-data" data-lables="{{x_data}}" data-values="{{y_data}}"></div>
+    <div id="chart-data" data-lables='{{x_data | tojson}}' data-values='{{y_data | tojson}}'></div>
 
     <table border="1">
         <thead>
@@ -51,8 +51,10 @@
     <script type="text/javascript">
 
         const chartData = document.querySelector("#chart-data");
-        const lables = chartData.dataset.lables;
-        const values = chartData.dataset.values;
+        const lables = JSON.parse(chartData.dataset.lables);
+        const values = JSON.parse(chartData.dataset.values);
+
+
 
         console.log(chartData, lables, values);
 
@@ -66,15 +68,21 @@
             },
             tooltip: {},
             legend: {
-                data: ['销量']
+                data: ['PM25']
             },
             xAxis: {
                 data: lables
             },
+            dataZoom: [{
+                type: 'slider',
+                start: 0,
+                end: 100
+
+            }],
             yAxis: {},
             series: [
                 {
-                    name: '销量',
+                    name: '縣市',
                     type: 'bar',
                     data: values
                 }

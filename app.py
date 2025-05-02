@@ -21,14 +21,16 @@ def index():
     columns, datas = get_pm25_data_from_mysql()
     df = pd.DataFrame(datas, columns=columns)
 
-    if county != "ALL":
+    if county == "ALL":
+        df1 = df.groupby("county")["pm25"].mean().reset_index()
+        x_data = df1["county"].to_list()
+    else:
         df = df.groupby("county").get_group(county)
-        columns = df.columns.tolist()
-        datas = df.values.tolist()
-        print(df)
+        x_data = df["site"].to_list()
 
-    x_data = df["site"].to_list()
     y_data = df["pm25"].to_list()
+    columns = df.columns.tolist()
+    datas = df.values.tolist()
 
     return render_template(
         "index.html",
