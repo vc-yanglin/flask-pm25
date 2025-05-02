@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pm2.5站點資訊</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+</head>
+
+<body>
+    <h1>站點細懸浮微粒資料(pm2.5)</h1>
+
+    <select name="county" id="county">
+        <label for="county">選取縣市</label>
+        <option value="新北市">新北市</option>
+        <option value="台北市">台北市</option>
+    </select>
+
+    <select name="site" id="site">
+        <label for="site">選取站點</label>
+        <option value="林口">林口</option>
+        <option value="富貴角">富貴角</option>
+    </select>
+
+    <p><button type="button" onclick="query()">查詢</button></p>
+
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+    <script>
+        const countyEl = document.querySelector("#county");
+        const siteEl = document.querySelector("#site");
+
+
+        countyEl.addEventListener("change", () => {
+
+            console.log("change");
+            let county = countyEl.value;
+            const url = `/pm25-county-site?county=${county}`
+
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    siteEl.innerHTML = "";
+                    for (let i = 0; i < data.length; i++) {
+                        const opt = document.createElement("option");
+                        opt.value = data[i];
+                        opt.textContent = data[i];
+                        siteEl.appendChild(opt);
+                    }
+                });
+
+        })
+        // 基于准备好的dom，初始化echarts实例
+        var chart1 = echarts.init(document.getElementById('main'));
+
+        function query() {
+            let county = countyEl.value;
+            let site = siteEl.value;
+            const url = `/pm25-county-site?county=${county}&site=${site}`
+
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+
+                    console.log(data);
+                    drawChart(chart1, data.site, data.x_data, data.y_data);
+                });
+
+            console.log(countyEl.value, siteEl.value, url);
+        }
+
+        function drawChart(chart, site, label, values) {
+
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: 'pm25柱狀圖'
+                },
+                tooltip: {},
+                legend: {
+                    data: ['PM25']
+                },
+                xAxis: {
+                    data: label
+                },
+                yAxis: {},
+                series: [
+                    {
+                        name: '縣市',
+                        type: 'line',
+                        smooth: true,
+                        data: values
+                    }
+                ]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            chart.setOption(option);
+        }
+    </script>
+</body>
+
+</html>
