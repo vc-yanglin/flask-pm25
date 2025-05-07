@@ -12,10 +12,11 @@
 <body>
     <h1>站點細懸浮微粒資料(pm2.5)</h1>
 
+    <!-- 縣市選擇框 -->
     <select name="county" id="county">
-        <label for="county">選取縣市</label>
-        <option value="新北市">新北市</option>
-        <option value="台北市">台北市</option>
+        {% for county in counties %}
+        <option value="{{county}}" {% if selected_county==county %} selected {% endif %}>{{county}}</option>
+        {% endfor %}
     </select>
 
     <select name="site" id="site">

@@ -6,6 +6,7 @@ from pm25 import (
     get_pm25_data_from_mysql,
     update_db,
     get_pm25_data_by_site,
+    get_all_counties,
     get_site_by_counties,
 )
 import json
@@ -90,8 +91,8 @@ def pm25_county_site():
 
 @app.route("/pm25-site")
 def pm25_site():
-
-    return render_template("pm25-site.html")
+    counties=get_all_counties()
+    return render_template("pm25-site.html",county=counties)
 
 
 if __name__ == "__main__":
