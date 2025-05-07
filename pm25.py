@@ -127,4 +127,4 @@ def update_db():
 if __name__ == "__main__":
     # update_db()
     # print(get_pm25_data_by_site("新北市", "富貴角"))
-    print(get_site_by_counties("新北市"))
+    print(get_all_counties())

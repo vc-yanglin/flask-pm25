@@ -91,8 +91,8 @@ def pm25_county_site():
 
 @app.route("/pm25-site")
 def pm25_site():
-    counties=get_all_counties()
-    return render_template("pm25-site.html",county=counties)
+    counties = get_all_counties()
+    return render_template("pm25-site.html", counties=counties)
 
 
 if __name__ == "__main__":

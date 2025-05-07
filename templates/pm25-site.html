@@ -17,8 +17,9 @@
         {% for county in counties %}
         <option value="{{county}}" {% if selected_county==county %} selected {% endif %}>{{county}}</option>
         {% endfor %}
-    </select>
 
+    </select>
+    <br>
     <select name="site" id="site">
         <label for="site">選取站點</label>
         <option value="林口">林口</option>
