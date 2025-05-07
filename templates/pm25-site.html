@@ -29,15 +29,25 @@
     <p><button type="button" onclick="query()">查詢</button></p>
 
     <div id="main" style="width: 600px;height:400px;"></div>
-
+    <div id="panel">
+        <h3>Higher:<span class="higher">99</span>
+            <br>Lower:<span class="lower">0</span>
+    </div>
     <script>
         const countyEl = document.querySelector("#county");
         const siteEl = document.querySelector("#site");
 
+        updateSite();
 
         countyEl.addEventListener("change", () => {
-
             console.log("change");
+            updateSite();
+        })
+        // 基于准备好的dom，初始化echarts实例
+        var chart1 = echarts.init(document.getElementById('main'));
+
+        function updateSite() {
+
             let county = countyEl.value;
             const url = `/pm25-county-site?county=${county}`
 
@@ -54,20 +64,20 @@
                     }
                 });
 
-        })
-        // 基于准备好的dom，初始化echarts实例
-        var chart1 = echarts.init(document.getElementById('main'));
+        }
 
         function query() {
             let county = countyEl.value;
             let site = siteEl.value;
-            const url = `/pm25-county-site?county=${county}&site=${site}`
+            const url = `/pm25-data-site?county=${county}&site=${site}`
 
             fetch(url)
                 .then(res => res.json())
                 .then(data => {
 
                     console.log(data);
+                    document.querySelector(".higher").innerHTML = data.higher;
+                    document.querySelector(".lower").innerHTML = data.lower;
                     drawChart(chart1, data.site, data.x_data, data.y_data);
                 });
 
